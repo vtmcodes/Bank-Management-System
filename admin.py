@@ -5,8 +5,7 @@ bank_data = load_data()
 if bank_data is None:
     exit()
 
-balance = bank_data["balance"]
-code = bank_data["code"]
+accounts = bank_data["accounts"]
 blocked_accounts = bank_data["blocked_accounts"]
 
 loop_state = 1
@@ -34,7 +33,7 @@ while loop_state == 1:
             print("Or enter 0 to exit. ")
             oneauthchoice = input().strip().lower()
 
-            if oneauthchoice not in balance and oneauthchoice != "0":
+            if oneauthchoice not in accounts and oneauthchoice != "0":
                 print("Account doesnt exist! Try again. ")
                 loop_state = 1.1
 
@@ -46,12 +45,12 @@ while loop_state == 1:
                 print("Enter the sum of money to add to user account. ")
                 print()
                 add_account_sum = int(input())
-                balance[oneauthchoice] += add_account_sum
-                bank_data["balance"] = balance
+                accounts[oneauthchoice]["Balance"] += add_account_sum
+                bank_data["accounts"] = accounts
                 save_data(bank_data)
                 print()
                 print(f"Successfully added {add_account_sum} to account number {oneauthchoice}. ")
-                print(f"New account balance is {balance[oneauthchoice]}.")
+                print(f"New account balance is {accounts[oneauthchoice]['Balance']}. ")
                 loop_state = 1
 
     elif auth_choice == "2": # UNBLOCK ACCOUNT
@@ -89,7 +88,7 @@ while loop_state == 1:
                 if new_user_account == "0":
                     loop_state = 1
 
-                elif new_user_account in balance:
+                elif new_user_account in accounts:
                     print()
                     print("Account number already exists. Try again. ")
                     loop_state = 3.1
@@ -110,13 +109,87 @@ while loop_state == 1:
             
                         if nuapin == nuapin2:
                             print()
-                            balance[new_user_account] = 0
-                            code[new_user_account] = nuapin2
-                            bank_data["balance"] = balance
-                            bank_data["code"] = code
-                            save_data(bank_data)
-                            print(f"Successfully created account with user number {new_user_account} and pin {nuapin2}.")
-                            loop_state = 1
+                            print("Enter user's full name. ")
+                            new_user_name = input()
+                            loop_state = 3.3
+                            while loop_state == 3.3:
+                                try:
+                                    print()
+                                    print("Enter user phone number. ")
+                                    new_user_number = int(input())
+                                except ValueError:
+                                    print()
+                                    print("Dont use letters. ")
+                                    loop_state = 3.3
+                                if not new_user_number:
+                                    print()
+                                    print("Please enter a valid input. ")
+                                    loop_state = 3.3
+                                else:
+                                    strnun = str(new_user_number)
+                                    loop_state = 3.4
+                                    while loop_state == 3.4:
+                                        print()
+                                        print("Enter user address. ")
+                                        new_user_address = input().strip()
+                                        if not new_user_address:
+                                            print()
+                                            print("You didnt enter the address. ")
+                                            loop_state = 3.4
+                                        else:
+                                            loop_state = 3.5
+                                            while loop_state == 3.5:
+                                                print()
+                                                print("Enter user email. ")
+                                                new_user_email = input().strip()
+                                                if not new_user_email:
+                                                    print()
+                                                    print("You didnt enter the email. ")
+                                                    loop_state = 3.5
+                                                else:
+                                                    loop_state = 3.6
+                                                    while loop_state == 3.6:
+                                                        print()
+                                                        print("Enter user date of birth. ")
+                                                        new_user_dob = input().strip()
+                                                        if not new_user_dob:
+                                                            print()
+                                                            print("You didnt enter the date of birth. ")
+                                                            loop_state = 3.6
+                                                        else:
+                                                            loop_state = 3.7
+                                                            while loop_state == 3.7:
+                                                                print()
+                                                                print("Enter user citizenship number. ")
+                                                                new_user_cn = input().strip()
+                                                                if not new_user_cn:
+                                                                    print()
+                                                                    print("You didnt enter the citizenship number. ")
+                                                                    loop_state = 3.7
+                                                                else:
+                                                                    accounts[new_user_account] = {}
+                                                                    accounts[new_user_account]["Name"] = new_user_name
+                                                                    accounts[new_user_account]["Contact"] = strnun
+                                                                    accounts[new_user_account]["Balance"] = 0
+                                                                    accounts[new_user_account]["Pin"] = nuapin2
+                                                                    accounts[new_user_account]["Address"] = new_user_address
+                                                                    accounts[new_user_account]["DOB"] = new_user_dob
+                                                                    accounts[new_user_account]["Citizenship number"] = new_user_cn
+                                                                    accounts[new_user_account]["Email"] = new_user_email
+                                                                    bank_data["accounts"] = accounts
+                                                                    save_data(bank_data)
+                                                                    print()
+                                                                    print("Successfully created a new account. ")
+                                                                    print("DETAILS: ")
+                                                                    print(f"Name: {new_user_name}")
+                                                                    print(f"Contact: {strnun}")
+                                                                    print(f"Balance: 0")
+                                                                    print(f"Pin: {nuapin2}")
+                                                                    print(f"Address: {new_user_address}")
+                                                                    print(f"DOB: {new_user_dob}")
+                                                                    print(f"Citizenship number: {new_user_cn}")
+                                                                    print(f"E-mail: {new_user_email}")
+                                                                    loop_state = 1
                         else:
                             print()
                             print("Try again. They dont match. ")
@@ -133,7 +206,7 @@ while loop_state == 1:
             print("Enter the account to change the password of. ")
             print("Or enter 0 to exit. ")
             changepassacc = input()
-            if changepassacc not in balance:
+            if changepassacc not in accounts:
                 print()
                 print("Account does not exist. Try again. ")
                 loop_state = 4.1
@@ -166,8 +239,8 @@ while loop_state == 1:
                             intnpu2 = int(newpinuser2)
                             if intnpu == intnpu2:
                                 print()
-                                code[changepassacc] = newpinuser2
-                                bank_data["code"] = code
+                                accounts[changepassacc]["Pin"] = newpinuser2
+                                bank_data["accounts"] = accounts
                                 save_data(bank_data)
                                 print(f"Successfully changed user pin to {intnpu2}. ")
                                 loop_state = 1
@@ -193,7 +266,7 @@ while loop_state == 1:
                 print()
                 print("Account is already blocked. ")
                 loop_state = 5.1
-            elif need_block_acc not in balance:
+            elif need_block_acc not in accounts:
                 print()
                 print("Account does not exist. ")
                 loop_state = 5.1
@@ -235,7 +308,7 @@ while loop_state == 1:
                     print()
                     print("Enter user account do start account deletion process. ")
                     del_acc_user = input()
-                    if del_acc_user in balance:
+                    if del_acc_user in accounts:
                         loop_state = 6.3
                         while loop_state == 6.3:
                             print()
@@ -246,8 +319,8 @@ while loop_state == 1:
                             del_acc_verification = input()
                             if del_acc_verification == "1":
                                 print()
-                                del balance[del_acc_user]
-                                bank_data["balance"] = balance
+                                del accounts[del_acc_user]
+                                bank_data["accounts"] = accounts
                                 save_data(bank_data)
                                 print(f"Successfully deleted account number {del_acc_user}")
                                 loop_state = 1

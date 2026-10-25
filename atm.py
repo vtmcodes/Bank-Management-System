@@ -5,15 +5,19 @@ bank_data = load_data()
 if bank_data is None:
     exit()
 
-balance = bank_data["balance"]
-code = bank_data["code"]
+accounts = bank_data["accounts"]
 blocked_accounts = bank_data["blocked_accounts"]
 
-while True:
-    print()
-    atm_choice = input("Do you want to turn off the power or keep using the ATM? Type 'continue' to continue, and 'quit' to power off. ").strip().lower()
+loop_state = 1
 
-    if atm_choice == "continue":
+while loop_state == 1:
+    print()
+    print("Do you want to continue or quit using the ATM machine? ")
+    print("Enter 1 to continue. ")
+    print("Enter any other number to exit. ")
+    atm_choice = input().strip().lower()
+
+    if atm_choice == "1":
         print()
         try:
             user_input_account = int(input("Enter your account number: "))
@@ -27,8 +31,8 @@ while True:
         if acc_str in blocked_accounts:
             print()
             print("Account is blocked. Contact the bank authorities to unblock this account. ")
-            continue
-        if acc_str in balance:
+            loop_state = 1
+        elif acc_str in accounts:
             print()
             try:
                 user_input_sum = int(input("Enter the sum you want to withdraw: "))
@@ -38,10 +42,10 @@ while True:
                 continue
             if user_input_sum <= 0:
                 print("Inavlid sum. ")
-                continue
-            elif user_input_sum > balance[acc_str]:
+                loop_state = 1
+            elif user_input_sum > accounts[acc_str]["Balance"]:
                 print("Insufficient funds. ")
-                continue
+                loop_state = 1
             else:
                 pintries = 3
                 pins = False
@@ -53,17 +57,17 @@ while True:
                         print()
                         print("Dont use letters, try again. ")
                         continue
-                    if user_input_pin == code[acc_str]:
+                    if user_input_pin == accounts[acc_str]["Pin"]:
                         print()
                         print(f"Withdrawal successfull! ")                     
-                        balance[acc_str] -= user_input_sum
-                        bank_data["balance"] = balance
+                        accounts[acc_str]["Balance"] -= user_input_sum
+                        bank_data["accounts"] = accounts
                         save_data(bank_data)
                         print()
-                        print(f"You have {balance[acc_str]} left in your account. ")
+                        print(f"You have {accounts[acc_str]["Balance"]} left in your account. ")
                         pins = True
                         break
-                    elif user_input_pin != code[acc_str]:
+                    elif user_input_pin != accounts[acc_str]["Pin"]:
                         print()
                         print(f"Incorrect pin.")
                         pintries -= 1
@@ -79,4 +83,4 @@ while True:
             print("Account doesnt exist. ")
     
     else:
-        break
+        exit

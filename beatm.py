@@ -8,7 +8,7 @@ def load_data():
             return json.load(file)
     except FileNotFoundError:
         print("ERROR! storage.json not found / renamed. ")
-        print("Please restore the file before running the ATM system. ")
+        print("Please restore the file before running the system. ")
         return None
 
 def save_data(data):

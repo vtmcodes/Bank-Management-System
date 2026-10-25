@@ -84,120 +84,129 @@ while loop_state == 1:
             print("Or enter 0 to exit. ")
             try:
                 new_user_account = input()
-                intnua = int(new_user_account)
-                if new_user_account == "0":
-                    loop_state = 1
+            except ValueError:
+                print()
+                print("Dont use letters. Try again. ")
+                loop_state = 3.1
+            if new_user_account == "0":
+                loop_state = 1
 
-                elif new_user_account in accounts:
+            elif new_user_account in accounts:
+                print()
+                print("Account number already exists. Try again. ")
+                loop_state = 3.1
+
+            elif len(new_user_account) < 4:
+                print()
+                print("Enter a valid account number greater than 1000. ")
+                loop_state = 3.1
+
+            else:
+                loop_state = 3.2
+                while loop_state == 3.2:
                     print()
-                    print("Account number already exists. Try again. ")
-                    loop_state = 3.1
-
-                elif intnua <= 1000:
-                    print()
-                    print("Enter a valid account number greater than 1000. ")
-                    loop_state = 3.1
-
-                else:
-                    loop_state = 3.2
-                    while loop_state == 3.2:
+                    print("Enter pin for this user. ")
+                    nuapin = input().strip()
+                    if not nuapin.isdigit():
                         print()
-                        print("Enter pin for this user. ")
-                        nuapin = input()
+                        print("Number should be only numbers, not letters. Try again. ")
+                        loop_state = 3.2
+                    elif len(nuapin) != 4:
+                        print()
+                        print("Pin must be of 4 digits. Try again. ")
+                        loop_state = 3.2
+                    else:
                         print("Enter it again. They must match. ")
                         nuapin2 = input()
-            
+        
                         if nuapin == nuapin2:
-                            print()
-                            print("Enter user's full name. ")
-                            new_user_name = input()
-                            loop_state = 3.3
-                            while loop_state == 3.3:
-                                try:
+                            loop_state = 3.21
+                            while loop_state == 3.21:
+                                print()
+                                print("Enter user's full name. ")
+                                new_user_name = input()
+                                if not new_user_name:
                                     print()
-                                    print("Enter user phone number. ")
-                                    new_user_number = int(input())
-                                except ValueError:
-                                    print()
-                                    print("Dont use letters. ")
-                                    loop_state = 3.3
-                                if not new_user_number:
-                                    print()
-                                    print("Please enter a valid input. ")
-                                    loop_state = 3.3
+                                    print("You didnt enter the name. ")
+                                    loop_state = 3.21
                                 else:
-                                    strnun = str(new_user_number)
-                                    loop_state = 3.4
-                                    while loop_state == 3.4:
+                                    loop_state = 3.3
+                                    while loop_state == 3.3:
                                         print()
-                                        print("Enter user address. ")
-                                        new_user_address = input().strip()
-                                        if not new_user_address:
+                                        print("Enter user phone number. ")
+                                        new_user_number = input()
+                                        if not new_user_number:
                                             print()
-                                            print("You didnt enter the address. ")
-                                            loop_state = 3.4
+                                            print("You didnt enter the number. ")
+                                            loop_state = 3.3
                                         else:
-                                            loop_state = 3.5
-                                            while loop_state == 3.5:
+                                            loop_state = 3.4
+                                            while loop_state == 3.4:
                                                 print()
-                                                print("Enter user email. ")
-                                                new_user_email = input().strip()
-                                                if not new_user_email:
+                                                print("Enter user address. ")
+                                                new_user_address = input().strip()
+                                                if not new_user_address:
                                                     print()
-                                                    print("You didnt enter the email. ")
-                                                    loop_state = 3.5
+                                                    print("You didnt enter the address. ")
+                                                    loop_state = 3.4
                                                 else:
-                                                    loop_state = 3.6
-                                                    while loop_state == 3.6:
+                                                    loop_state = 3.5
+                                                    while loop_state == 3.5:
                                                         print()
-                                                        print("Enter user date of birth. ")
-                                                        new_user_dob = input().strip()
-                                                        if not new_user_dob:
+                                                        print("Enter user email. ")
+                                                        new_user_email = input().strip()
+                                                        if not new_user_email:
                                                             print()
-                                                            print("You didnt enter the date of birth. ")
-                                                            loop_state = 3.6
+                                                            print("You didnt enter the email. ")
+                                                            loop_state = 3.5
                                                         else:
-                                                            loop_state = 3.7
-                                                            while loop_state == 3.7:
+                                                            loop_state = 3.6
+                                                            while loop_state == 3.6:
                                                                 print()
-                                                                print("Enter user citizenship number. ")
-                                                                new_user_cn = input().strip()
-                                                                if not new_user_cn:
+                                                                print("Enter user date of birth. ")
+                                                                new_user_dob = input().strip()
+                                                                if not new_user_dob:
                                                                     print()
-                                                                    print("You didnt enter the citizenship number. ")
-                                                                    loop_state = 3.7
+                                                                    print("You didnt enter the date of birth. ")
+                                                                    loop_state = 3.6
                                                                 else:
-                                                                    accounts[new_user_account] = {}
-                                                                    accounts[new_user_account]["Name"] = new_user_name
-                                                                    accounts[new_user_account]["Contact"] = strnun
-                                                                    accounts[new_user_account]["Balance"] = 0
-                                                                    accounts[new_user_account]["Pin"] = nuapin2
-                                                                    accounts[new_user_account]["Address"] = new_user_address
-                                                                    accounts[new_user_account]["DOB"] = new_user_dob
-                                                                    accounts[new_user_account]["Citizenship number"] = new_user_cn
-                                                                    accounts[new_user_account]["Email"] = new_user_email
-                                                                    bank_data["accounts"] = accounts
-                                                                    save_data(bank_data)
-                                                                    print()
-                                                                    print("Successfully created a new account. ")
-                                                                    print("DETAILS: ")
-                                                                    print(f"Name: {new_user_name}")
-                                                                    print(f"Contact: {strnun}")
-                                                                    print(f"Balance: 0")
-                                                                    print(f"Pin: {nuapin2}")
-                                                                    print(f"Address: {new_user_address}")
-                                                                    print(f"DOB: {new_user_dob}")
-                                                                    print(f"Citizenship number: {new_user_cn}")
-                                                                    print(f"E-mail: {new_user_email}")
-                                                                    loop_state = 1
+                                                                    loop_state = 3.7
+                                                                    while loop_state == 3.7:
+                                                                        print()
+                                                                        print("Enter user citizenship number. ")
+                                                                        new_user_cn = input().strip()
+                                                                        if not new_user_cn:
+                                                                            print()
+                                                                            print("You didnt enter the citizenship number. ")
+                                                                            loop_state = 3.7
+                                                                        else:
+                                                                            accounts[new_user_account] = {}
+                                                                            accounts[new_user_account]["Name"] = new_user_name
+                                                                            accounts[new_user_account]["Contact"] = new_user_number
+                                                                            accounts[new_user_account]["Balance"] = 0
+                                                                            accounts[new_user_account]["Pin"] = nuapin2
+                                                                            accounts[new_user_account]["Address"] = new_user_address
+                                                                            accounts[new_user_account]["DOB"] = new_user_dob
+                                                                            accounts[new_user_account]["Citizenship number"] = new_user_cn
+                                                                            accounts[new_user_account]["Email"] = new_user_email
+                                                                            bank_data["accounts"] = accounts
+                                                                            save_data(bank_data)
+                                                                            print()
+                                                                            print("Successfully created a new account. ")
+                                                                            print("DETAILS: ")
+                                                                            print(f"Name: {new_user_name}")
+                                                                            print(f"Contact: {new_user_number}") 
+                                                                            print(f"Balance: 0")
+                                                                            print(f"Pin: {nuapin2}")
+                                                                            print(f"Address: {new_user_address}")
+                                                                            print(f"DOB: {new_user_dob}")
+                                                                            print(f"Citizenship number: {new_user_cn}")
+                                                                            print(f"E-mail: {new_user_email}")
+                                                                            loop_state = 1
                         else:
                             print()
                             print("Try again. They dont match. ")
                             loop_state = 3.2
-            except ValueError:
-                print("Dont enter letters. Try again. ")
-                loop_state = 3.1
-
 
     elif auth_choice == "4": # CHANGE PIN
         loop_state = 4.1

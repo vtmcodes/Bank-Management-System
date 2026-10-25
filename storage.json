@@ -19,6 +19,16 @@
             "DOB": "2001-12-09",
             "Citizenship number": "12",
             "Email": "g"
+        },
+        "1001": {
+            "Name": "Alex",
+            "Contact": "2919939102",
+            "Balance": 0,
+            "Pin": "3818",
+            "Address": "Ohio",
+            "DOB": "2019/09/29",
+            "Citizenship number": "1929838191",
+            "Email": "alexohio29@gmail.com"
         }
     },
     "blocked_accounts": [],

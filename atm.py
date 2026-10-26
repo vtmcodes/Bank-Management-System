@@ -14,73 +14,78 @@ while loop_state == 1:
     print()
     print("Do you want to continue or quit using the ATM machine? ")
     print("Enter 1 to continue. ")
-    print("Enter any other number to exit. ")
+    print("Enter 0 to exit. ")
     atm_choice = input().strip().lower()
 
     if atm_choice == "1":
         print()
-        try:
-            user_input_account = int(input("Enter your account number: "))
-        except ValueError:
-            print()
-            print("Dont use letters. Try again. ")
-            continue
+        user_input_account = input("Enter your account number: ").strip()
 
-        acc_str = str(user_input_account)
-
-        if acc_str in blocked_accounts:
+        if user_input_account in blocked_accounts:
             print()
             print("Account is blocked. Contact the bank authorities to unblock this account. ")
             loop_state = 1
-        elif acc_str in accounts:
-            print()
-            try:
-                user_input_sum = int(input("Enter the sum you want to withdraw: "))
-            except ValueError:
+        elif user_input_account in accounts:
+            loop_state = 1.1
+            while loop_state == 1.1:
                 print()
-                print("Dont use letters, try again. ")
-                continue
-            if user_input_sum <= 0:
-                print("Inavlid sum. ")
-                loop_state = 1
-            elif user_input_sum > accounts[acc_str]["Balance"]:
-                print("Insufficient funds. ")
-                loop_state = 1
-            else:
-                pintries = 3
-                pins = False
-                while pintries > 0:
+                try:
+                    user_input_sum = int(input("Enter the sum you want to withdraw: "))
+                except ValueError:
                     print()
-                    try:
-                        user_input_pin = input("Enter your pin: ")
-                    except ValueError:
-                        print()
-                        print("Dont use letters, try again. ")
+                    print("Invalid input, try again. ")
+                    continue
+                if user_input_sum <= 0:
+                    print("Inavlid sum. ")
+                    continue
+                elif user_input_sum > accounts[user_input_account]["Balance"]:
+                        print("Insufficient funds. ")
+                        loop_state = 1
                         continue
-                    if user_input_pin == accounts[acc_str]["Pin"]:
+                else:
+                    pintries = 3
+                    pins = False
+                    while pintries > 0:
                         print()
-                        print(f"Withdrawal successfull! ")                     
-                        accounts[acc_str]["Balance"] -= user_input_sum
-                        bank_data["accounts"] = accounts
+                        try:
+                            user_input_pin = input("Enter your pin: ")
+                        except ValueError:
+                            print()
+                            print("Dont use letters, try again. ")
+                            continue
+                        if user_input_pin == accounts[user_input_account]["Pin"]:
+                            print()
+                            print(f"Withdrawal successfull! ")                     
+                            accounts[user_input_account]["Balance"] -= user_input_sum
+                            bank_data["accounts"] = accounts
+                            save_data(bank_data)
+                            print()
+                            print(f"You have {accounts[user_input_account]["Balance"]} left in your account. ")
+                            pins = True
+                            loop_state = 1
+                            continue
+                        elif user_input_pin != accounts[user_input_account]["Pin"]:
+                            print()
+                            print(f"Incorrect pin.")
+                            pintries -= 1
+                            print()
+                            print(f"You have {pintries} tries left. ")
+                    if pins == False and pintries == 0:
+                        blocked_accounts.append(user_input_account)
                         save_data(bank_data)
                         print()
-                        print(f"You have {accounts[acc_str]["Balance"]} left in your account. ")
-                        pins = True
-                        break
-                    elif user_input_pin != accounts[acc_str]["Pin"]:
-                        print()
-                        print(f"Incorrect pin.")
-                        pintries -= 1
-                        print()
-                        print(f"You have {pintries} tries left. ")
-                if pins == False and pintries == 0:
-                    blocked_accounts.append(acc_str)
-                    save_data(bank_data)
-                    print()
-                    print("Your account has been blocked due to too many incorrect pin attempts. ")
-                    continue
+                        print("Your account has been blocked due to too many incorrect pin attempts. ")
+                        continue
         else:
             print("Account doesnt exist. ")
+
+    elif atm_choice == "0":
+        print()
+        print("Stopped machine. ")
+        break
     
     else:
-        exit
+        print()
+        print("Invalid choice. Redirecting... ")
+        loop_state = 1
+        continue

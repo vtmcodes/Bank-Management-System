@@ -21,7 +21,7 @@
             "Email": "g"
         },
         "1001": {
-            "Name": "Alex",
+            "Name": "Yes",
             "Contact": "2919939102",
             "Balance": 0,
             "Pin": "3818",
@@ -31,7 +31,9 @@
             "Email": "alexohio29@gmail.com"
         }
     },
-    "blocked_accounts": [],
+    "blocked_accounts": [
+        "1001"
+    ],
     "admin": {
         "0001": "123456789",
         "0002": "192944849",
